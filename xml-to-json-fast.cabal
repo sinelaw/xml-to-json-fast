@@ -1,0 +1,37 @@
+name:                xml-to-json-fast
+version:             1.0.0
+synopsis:            Fast, light converter of xml to json capable of handling huge xml files
+description:         Assumes input xml is valid, which allows constant memory usage (<4 MB) and faster parsing.
+license:             MIT
+license-file:        LICENSE
+author:              Noam Lewis
+maintainer:          jones.noamle@gmail.com
+homepage:            https://github.com/sinelaw/xml-to-json-fast
+bug-reports:         https://github.com/sinelaw/xml-to-json-fast/issues
+copyright:           Copyright Noam Lewis, 2014
+category:            Web, XML, JSON
+build-type:          Simple
+cabal-version:       >=1.8
+Extra-Source-Files:
+  README.md
+
+source-repository head
+  type:     git
+  location: https://github.com/sinelaw/xml-to-json-fast.git
+  
+library
+  exposed-modules: Text.XML.JSON.StreamingXmlToJson
+  extensions: CPP
+  hs-source-dirs: src
+  build-depends:   base >= 4.5.0 && < 4.8, tagsoup, text
+  ghc-options: -Wall -O2
+  Ghc-Prof-Options:  -rtsopts -prof -auto-all -caf-all 
+  
+executable xml-to-json-fast
+  main-is: Main.hs             
+  hs-source-dirs: src-exec
+  extensions: CPP
+  build-depends:   base >= 4.5.0 && < 4.8, xml-to-json-fast, process, directory
+  ghc-options: -Wall -O2 
+  Ghc-Prof-Options:   -rtsopts -prof -auto-all  -caf-all
+  
