@@ -1,7 +1,7 @@
 name:                xml-to-json-fast
 version:             1.0.0
 synopsis:            Fast, light converter of xml to json capable of handling huge xml files
-description:         Assumes input xml is valid, which allows constant memory usage (<4 MB) and faster parsing.
+description:         Assumes input xml is valid, which allows constant memory usage (<4 MB) and faster parsing. For a fully-featured, but memory-bound converter see the xml-to-json package.
 license:             MIT
 license-file:        LICENSE
 author:              Noam Lewis
