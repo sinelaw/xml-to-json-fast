@@ -52,11 +52,10 @@ toTextKV (k,v) = concat [quoteT, k, "\": \"", encodeStr v, quoteT]
 
 -- TODO: use a faster method for quotation escaping. Consider implementing the encoding function using String (or ByteString)
 encodeStr :: String -> String
-encodeStr t = concat . map (\c -> if c == '"' 
-                                 then "\\\"" 
-                                 else if c == '\\'
-                                 then "\\\\"
-                                 else [c]) 
+encodeStr t = concatMap (\c -> case c of
+                                   '"' -> "\\\""
+                                   '\\' -> "\\\\"
+                                   _ -> [c])
               $ t
 
 convertTag :: State -> Tag String -> State
