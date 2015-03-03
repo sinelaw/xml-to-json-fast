@@ -48,12 +48,14 @@ toTextAttrs as = concat [ "\"attrs\": { "
                           ]
 
 toTextKV :: (String, String) -> String
-toTextKV (k,v) = concat [quoteT, k, "\": \"", v, quoteT]
+toTextKV (k,v) = concat [quoteT, k, "\": \"", encodeStr v, quoteT]
 
 -- TODO: use a faster method for quotation escaping. Consider implementing the encoding function using String (or ByteString)
 encodeStr :: String -> String
 encodeStr t = concat . map (\c -> if c == '"' 
                                  then "\\\"" 
+                                 else if c == '\\'
+                                 then "\\\\"
                                  else [c]) 
               $ t
 
