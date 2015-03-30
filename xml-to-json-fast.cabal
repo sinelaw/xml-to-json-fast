@@ -1,5 +1,5 @@
 name:                xml-to-json-fast
-version:             1.0.1
+version:             2.0.0
 synopsis:            Fast, light converter of xml to json capable of handling huge xml files
 description:         Assumes input xml is valid, which allows constant memory usage (<4 MB) and faster parsing. For a fully-featured, but memory-bound converter see the xml-to-json package.
 license:             MIT
@@ -23,7 +23,7 @@ library
   exposed-modules: Text.XML.JSON.StreamingXmlToJson
   extensions: CPP
   hs-source-dirs: src
-  build-depends:   base >= 4.5.0 && < 4.8, tagsoup, text
+  build-depends:   base >= 4.5.0, tagsoup, text
   ghc-options: -Wall -O2
   Ghc-Prof-Options:  -rtsopts -prof -auto-all -caf-all 
   
@@ -31,7 +31,7 @@ executable xml-to-json-fast
   main-is: Main.hs             
   hs-source-dirs: src-exec
   extensions: CPP
-  build-depends:   base >= 4.5.0 && < 4.8, xml-to-json-fast, process, directory
+  build-depends:   base >= 4.5.0, xml-to-json-fast, process, directory
   ghc-options: -Wall -O2 
   Ghc-Prof-Options:   -rtsopts -prof -auto-all  -caf-all
   

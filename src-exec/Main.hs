@@ -1,30 +1,43 @@
 module Main  where
 
-import Control.Exception
-import Control.Monad
-import Data.List
-import System.Cmd
-import System.Directory
-import System.Exit
-import System.IO
-import System.Environment (getArgs)
-import Text.XML.JSON.StreamingXmlToJson(xmlStreamToJSON)
+import           Control.Monad
+import           System.Console.GetOpt            (ArgOrder (Permute), OptDescr (..), getOpt,
+                                                   usageInfo)
+import           System.Environment               (getArgs)
+import           System.Exit                      (ExitCode (ExitFailure), exitWith)
+import           System.IO                        (hPutStrLn, stderr, hGetContents, IOMode(..), withBinaryFile, stdin, Handle)
+import           Text.XML.JSON.StreamingXmlToJson (xmlStreamToJSON)
 
-openItem :: String -> IO String
-openItem url | not $ "http://" `isPrefixOf` url = readFile url
-openItem url = bracket
-    (openTempFile "." "tagsoup.tmp")
-    (\(file,_) -> removeFile file)
-    $ \(file,hndl) -> do
-        hClose hndl
-        putStrLn $ "Downloading: " ++ url
-        res <- system $ "wget " ++ url ++ " -O " ++ file
-        when (res /= ExitSuccess) $ error $ "Failed to download using wget: " ++ url
-        src <- readFile file
-        return src
+data Flag = ShowHelp
+            deriving (Show, Eq, Ord)
+                     
+options :: [OptDescr Flag]
+options = []
 
+parseOptions :: [String] -> IO ([Flag], [String])
+parseOptions argv =
+  case getOpt Permute options argv of
+    (o,n,[]  ) -> return (o,n)
+    (_,_,errs) -> ioError (userError (concat errs ++ usageInfo usageHeader options))
+
+usageHeader :: String
+usageHeader = "Usage: <program> files..."
+
+processFile :: Handle -> IO ()
+processFile handle = do
+    fileData <- hGetContents handle
+    forM_ (xmlStreamToJSON fileData) putStrLn
+               
 main :: IO ()
 main = do
     args <- getArgs
-    fileData <- openItem . head $ args
-    forM_ (xmlStreamToJSON fileData) putStrLn
+    (flags, inputFiles) <- parseOptions args
+
+    case inputFiles of
+        [] -> processFile stdin
+        xs -> forM_ xs $ \fileName -> withBinaryFile fileName ReadMode processFile
+
+die :: String -> IO a
+die msg = do
+  hPutStrLn stderr msg
+  exitWith (ExitFailure 1)
