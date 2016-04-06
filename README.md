@@ -1,5 +1,4 @@
-xml-to-json-fast
-================
+# xml-to-json-fast
 
 Fast, light converter of xml to json capable of handling huge xml files
 
@@ -9,3 +8,8 @@ The fast, simple `xml-to-json-fast` executable provides an unambiguous one-to-on
 When using "fast" (`xml-to-json-fast`), the output reflects the exact structure of the xml, which is allowed to be somewhat malformed (resulting in invalid json).
 
 **Formatting:** Currently `xml-to-json-fast` does **not** format the resulting json. If whitespace formatting is required, you can use a json formatting program such as [aeson-pretty](https://hackage.haskell.org/package/aeson-pretty) (on debian/ubuntu, can be install with `sudo apt-get install aeson-pretty`). Note that most of the json formatters are memory bound, so very large json files may cause the formatter to run out of memory.
+
+# Installation
+
+1. Get [Haskell Stack](haskellstack.org)
+2. Run: `stack install xml-to-json-fast`
