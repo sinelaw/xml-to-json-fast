@@ -10,7 +10,7 @@ import           Text.XML.JSON.StreamingXmlToJson (xmlStreamToJSON)
 
 data Flag = ShowHelp
             deriving (Show, Eq, Ord)
-                     
+
 options :: [OptDescr Flag]
 options = []
 
@@ -27,7 +27,7 @@ processFile :: Handle -> IO ()
 processFile handle = do
     fileData <- hGetContents handle
     forM_ (xmlStreamToJSON fileData) putStrLn
-               
+
 main :: IO ()
 main = do
     args <- getArgs

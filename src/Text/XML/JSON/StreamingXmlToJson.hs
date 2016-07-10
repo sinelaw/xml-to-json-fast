@@ -59,17 +59,17 @@ encodeStr t = concatMap (\c -> case c of
               $ t
 
 convertTag :: State -> Tag String -> State
-convertTag (State _ (curCount:parents)) (TagOpen name attrs) 
+convertTag (State _ (curCount:parents)) (TagOpen name attrs)
     = State startObj (0 : (curCount + 1) : parents)
       where startObj = createStartObject name attrs (curCount > 0)
-convertTag (State _ []) (TagOpen name attrs) 
+convertTag (State _ []) (TagOpen name attrs)
     = State startObj [0]
       where startObj = createStartObject name attrs False
 convertTag (State _ ( _:ancestors)) (TagClose _)
     = State EndObject ancestors
 convertTag (State _ []) t@(TagClose _)
     = error $ "Malformed XML, unexpected close tag: " ++ (show t)
-convertTag (State _ parents) (TagText text) 
+convertTag (State _ parents) (TagText text)
     = if stripped == ""
       then State Empty parents
       else State (Text stripped comma) newParents
@@ -80,7 +80,7 @@ convertTag (State _ parents) (TagText text)
 convertTag (State _ parents) _ = (State Empty parents)
 
 createStartObject :: String -> Attrs -> Bool -> EncodedJSON
-createStartObject name attrs hasLeadingComma 
+createStartObject name attrs hasLeadingComma
     = case head name of
         '!' -> Empty
         '?' -> Empty
