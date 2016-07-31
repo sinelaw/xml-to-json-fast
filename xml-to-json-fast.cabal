@@ -5,7 +5,7 @@ description:
                      Assumes input xml is valid, which allows constant memory usage (<4 MB) and faster parsing. For a fully-featured, but memory-bound converter see the xml-to-json package.
                      .
                      If not input file is given, reads from stdin (so it can be used in a unix pipe chain).
- 
+
 license:             MIT
 license-file:        LICENSE
 author:              Noam Lewis
@@ -22,20 +22,19 @@ Extra-Source-Files:
 source-repository head
   type:     git
   location: https://github.com/sinelaw/xml-to-json-fast.git
-  
+
 library
   exposed-modules: Text.XML.JSON.StreamingXmlToJson
   extensions: CPP
   hs-source-dirs: src
   build-depends:   base >= 4.5.0 && < 5, tagsoup, text
   ghc-options: -Wall -O2
-  Ghc-Prof-Options:  -rtsopts -prof -auto-all -caf-all 
-  
+  Ghc-Prof-Options:  -rtsopts -prof -auto-all -caf-all
+
 executable xml-to-json-fast
-  main-is: Main.hs             
+  main-is: Main.hs
   hs-source-dirs: src-exec
   extensions: CPP
   build-depends:   base >= 4.5.0 && < 5, xml-to-json-fast, process, directory
-  ghc-options: -Wall -O2 
+  ghc-options: -Wall -O2
   Ghc-Prof-Options:   -rtsopts -prof -auto-all  -caf-all
-  
