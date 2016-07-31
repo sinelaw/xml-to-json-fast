@@ -28,7 +28,7 @@ quoteT = "\""
 
 toText :: EncodedJSON -> String
 toText Empty = ""
-toText (Text t hasLeadingComma) = concat [leadingComma, quoteT, encodeStr t, quoteT]
+toText (Text t hasLeadingComma) = concat [leadingComma, encodeStr t]
     where leadingComma = if hasLeadingComma then ", " else ""
 toText EndObject = "]}\n"
 toText (StartObject name attrs hasLeadingComma) = concat [ leadingComma
@@ -48,15 +48,11 @@ toTextAttrs as = concat [ "\"attrs\": { "
                           ]
 
 toTextKV :: (String, String) -> String
-toTextKV (k,v) = concat [quoteT, k, "\": \"", encodeStr v, quoteT]
+toTextKV (k,v) = concat [quoteT, k, quoteT, ": ", encodeStr v]
 
 -- TODO: use a faster method for quotation escaping. Consider implementing the encoding function using String (or ByteString)
 encodeStr :: String -> String
-encodeStr t = concatMap (\c -> case c of
-                                   '"' -> "\\\""
-                                   '\\' -> "\\\\"
-                                   _ -> [c])
-              $ t
+encodeStr = show
 
 convertTag :: State -> Tag String -> State
 convertTag (State _ (curCount:parents)) (TagOpen name attrs)
