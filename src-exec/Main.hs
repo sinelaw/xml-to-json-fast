@@ -31,7 +31,7 @@ processFile handle = do
 main :: IO ()
 main = do
     args <- getArgs
-    (flags, inputFiles) <- parseOptions args
+    (_flags, inputFiles) <- parseOptions args
 
     case inputFiles of
         [] -> processFile stdin
