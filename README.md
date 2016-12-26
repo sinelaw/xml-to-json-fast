@@ -11,5 +11,5 @@ When using "fast" (`xml-to-json-fast`), the output reflects the exact structure 
 
 # Installation
 
-1. Get [Haskell Stack](haskellstack.org)
+1. Get [Haskell Stack](http://haskellstack.org)
 2. Run: `stack install xml-to-json-fast`
