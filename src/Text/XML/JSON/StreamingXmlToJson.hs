@@ -50,9 +50,14 @@ toTextAttrs as = concat [ "\"attrs\": { "
 toTextKV :: (String, String) -> String
 toTextKV (k,v) = concat [quoteT, k, quoteT, ": ", encodeStr v]
 
--- TODO: use a faster method for quotation escaping. Consider implementing the encoding function using String (or ByteString)
+encodeStrInternal :: String -> String
+encodeStrInternal [] = ['"']
+encodeStrInternal ('"':s) = '\\':'"': encodeStrInternal s
+encodeStrInternal ('\\':s) = '\\':'\\': encodeStrInternal s
+encodeStrInternal (x:s) = x : encodeStrInternal s
+
 encodeStr :: String -> String
-encodeStr = show
+encodeStr s = '"' : encodeStrInternal s
 
 convertTag :: State -> Tag String -> State
 convertTag (State _ (curCount:parents)) (TagOpen name attrs)
@@ -81,4 +86,3 @@ createStartObject name attrs hasLeadingComma
         '!' -> Empty
         '?' -> Empty
         _ -> StartObject name attrs hasLeadingComma
-

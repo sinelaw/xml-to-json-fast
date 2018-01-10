@@ -5,7 +5,8 @@ import           System.Console.GetOpt            (ArgOrder (Permute), OptDescr 
                                                    usageInfo)
 import           System.Environment               (getArgs)
 import           System.Exit                      (ExitCode (ExitFailure), exitWith)
-import           System.IO                        (hPutStrLn, stderr, hGetContents, IOMode(..), withBinaryFile, stdin, Handle)
+import           System.IO                        (hPutStrLn, stderr, hGetContents, IOMode(..), withBinaryFile, stdin, Handle
+                                                  ,hSetEncoding, utf8)
 import           Text.XML.JSON.StreamingXmlToJson (xmlStreamToJSON)
 
 data Flag = ShowHelp
@@ -25,6 +26,7 @@ usageHeader = "Usage: <program> files..."
 
 processFile :: Handle -> IO ()
 processFile handle = do
+    hSetEncoding handle utf8
     fileData <- hGetContents handle
     forM_ (xmlStreamToJSON fileData) putStrLn
 
